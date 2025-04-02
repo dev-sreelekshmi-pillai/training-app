@@ -1,0 +1,196 @@
+<div class="card">
+    <!-- <div class="card-header">
+        <div class="card-title">{{employee?.fullName}}</div>
+    </div> -->
+    @if (employee) {
+
+    <div class="card-body">
+        <form [formGroup]="empForm" (ngSubmit)="updateEmployee()">
+            <div class=" input-group mb-3">
+                <label for="firstName" class="input-group-text">First Name</label>
+                <input type="text" class="form-control" name="firstName" id="firstName" formControlName="firstName">
+            </div>
+            @if (empForm.controls['firstName'].invalid && (empForm.controls['firstName'].dirty ||
+            empForm.controls['firstName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['firstName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+            <div class="input-group mb-3">
+                <label for="middleName" class=" input-group-text">Middle Name</label>
+                <input type="text" class="form-control" name="middleName" id="middleName" formControlName="middleName">
+            </div>
+            @if (empForm.controls['middleName'].invalid && (empForm.controls['middleName'].dirty ||
+            empForm.controls['middleName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['middleName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+            <div class="input-group mb-3">
+                <label for="lastName" class=" input-group-text">Last Name</label>
+                <input type="text" class="form-control" name="lastName" id="lastName" formControlName="lastName">
+            </div>
+            @if (empForm.controls['lastName'].invalid && (empForm.controls['lastName'].dirty ||
+            empForm.controls['lastName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['lastName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+            <div class="mb-3 input-group">
+                <label for="fullName" class=" input-group-text">Full name</label>
+                <input type="text" class="form-control" name="fullName" id="fullName" formControlName="fullName">
+            </div>
+            @if (empForm.controls['fullName'].invalid && (empForm.controls['fullName'].dirty ||
+            empForm.controls['fullName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['fullName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+
+            <div class="input-group mb-3">
+                <label for="joiningOn" class="input-group-text">Joining Date</label>
+                <input type="date" class="form-control" name="joiningOn" id="joiningOn" formControlName="joiningOn">
+            </div>
+            <div class="input-group mb-3">
+                <label for="officeContactNo" class=" input-group-text">Contact No</label>
+                <input type="text" class="form-control" name="officeContactNo" id="officeContactNo"
+                    formControlName="officeContactNo">
+            </div>
+            <div class="input-group mb-3">
+                <label for="designationName" class=" input-group-text">Designation</label>
+                <input type="text" class="form-control" name="designationName" id="designationName"
+                    formControlName="designationName">
+            </div>
+            <div class="input-group mb-3">
+                <label for="departmentName" class=" input-group-text">Department</label>
+                <input type="text" class="form-control" name="departmentName" id="departmentName"
+                    formControlName="departmentName">
+            </div>
+            <div class="card-footer">
+                <button type="button" (click)="close.emit()" class="btn btn-secondary mx-1">Go back</button>
+                <button type="submit" [disabled]="!empForm.valid" class="btn btn-primary mx-1">Save Changes</button>
+            </div>
+        </form>
+
+    </div>}
+    @else{
+    <div class="card-body">
+        <form [formGroup]="empNewForm" (ngSubmit)="updateEmployee()">
+            <div class=" input-group mb-3">
+                <label for="firstName" class="input-group-text">First Name</label>
+                <input type="text" class="form-control" name="firstName" id="firstName" formControlName="firstName">
+            </div>
+            @if (empForm.controls['firstName'].invalid && (empForm.controls['firstName'].dirty ||
+            empForm.controls['firstName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['firstName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+            <div class="input-group mb-3">
+                <label for="middleName" class=" input-group-text">Middle Name</label>
+                <input type="text" class="form-control" name="middleName" id="middleName" formControlName="middleName">
+            </div>
+            @if (empForm.controls['middleName'].invalid && (empForm.controls['middleName'].dirty ||
+            empForm.controls['middleName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['middleName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+            <div class="input-group mb-3">
+                <label for="lastName" class=" input-group-text">Last Name</label>
+                <input type="text" class="form-control" name="lastName" id="lastName" formControlName="lastName">
+            </div>
+            @if (empForm.controls['lastName'].invalid && (empForm.controls['lastName'].dirty ||
+            empForm.controls['lastName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['lastName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+            <div class="mb-3 input-group">
+                <label for="fullName" class=" input-group-text">Full name</label>
+                <input type="text" class="form-control" name="fullName" id="fullName" formControlName="fullName">
+            </div>
+            @if (empForm.controls['fullName'].invalid && (empForm.controls['fullName'].dirty ||
+            empForm.controls['fullName'].touched)) {
+            <div class="alert alert-danger">
+                @if (empForm.controls['fullName'].hasError('required')) {
+                <div>
+                    Name is required.
+                </div>
+                }
+            </div>
+            }
+
+            <div class="input-group mb-3">
+                <label for="joiningOn" class="input-group-text">Joining Date</label>
+                <input type="date" class="form-control" name="joiningOn" id="joiningOn" formControlName="joiningOn">
+            </div>
+            <div class="input-group mb-3">
+                <label for="birthDate" class="input-group-text">Birth Date</label>
+                <input type="date" class="form-control" name="birthDate" id="birthDate" formControlName="birthDate">
+            </div>
+
+            <div class="input-group mb-3">
+                <label for="parmenantAddress" class=" input-group-text">Permanent Address</label>
+                <input type="text" class="form-control" name="parmenantAddress" id="parmenantAddress"
+                    formControlName="parmenantAddress">
+            </div>
+            <div class="input-group mb-3">
+                <label for="currentAddress" class=" input-group-text">Current Address</label>
+                <input type="text" class="form-control" name="currentAddress" id="currentAddress"
+                    formControlName="currentAddress">
+            </div>
+
+            <div class="input-group mb-3">
+                <label for="personalMobileNo" class=" input-group-text">Personal Contact No</label>
+                <input type="text" class="form-control" name="personalMobileNo" id="personalMobileNo"
+                    formControlName="personalMobileNo">
+            </div>
+            <div class="input-group mb-3">
+                <label for="otherContactNo" class=" input-group-text">Other Contact No</label>
+                <input type="text" class="form-control" name="otherContactNo" id="otherContactNo"
+                    formControlName="otherContactNo">
+            </div>
+            <div class="input-group mb-3">
+                <label for="employeeCode" class=" input-group-text">Employee Code</label>
+                <input type="text" class="form-control" name="employeeCode" id="employeeCode"
+                    formControlName="employeeCode">
+            </div>
+            <div class="card-footer">
+                <button type="button" (click)="close.emit()" class="btn btn-secondary mx-1">Go back</button>
+                <button type="submit" [disabled]="!empNewForm.valid" class="btn btn-primary mx-1">Save
+                    Changes</button>
+            </div>
+        </form>
+
+    </div>
+    }
+</div>

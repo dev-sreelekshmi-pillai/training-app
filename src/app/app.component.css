@@ -1,0 +1,23 @@
+.full-size {
+    height: 100%;
+    width: 100%;
+}
+
+.card-align {
+    justify-items: center;
+    margin: auto;
+}
+
+.card {
+    /* padding: 0px 30px; */
+    /* justify-self: center; */
+    width: 50%;
+    text-align: center;
+}
+
+.home-bg-color {
+    height: 100%;
+    background-color: #e8eaee;
+    width: 100%;
+    overflow: overlay;
+}

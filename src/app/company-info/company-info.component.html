@@ -1,0 +1,51 @@
+<div class="card">
+    @if (companyInfo) {
+    <div class="card-header">
+        <div class="card-title">{{companyInfo.name}}</div>
+        <button *ngIf="!isFormEditable" (click)="editCompanyDetails()" id="editBtn"
+            class="btn btn-warning">Edit</button>
+        <button *ngIf="isFormEditable" [disabled]="infoForm.pristine" (click)="editCompanyDetails()" id="editBtn"
+            class="btn btn-primary mx-2">Update</button>
+        <button *ngIf="isFormEditable" (click)="cancelChanges()" id="editBtn" class="btn btn-primary">Cancel</button>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="infoForm">
+            <div class="mb-3 input-group">
+                <label for="address1" class=" input-group-text">Address Line 1</label>
+                <input type="text" class="form-control" name="address1" id="address1" formControlName="addressLine1">
+            </div>
+            <div class="input-group mb-3">
+                <label for="address2" class=" input-group-text">Address Line 2</label>
+                <input type="text" class="form-control" name="address2" id="address2" formControlName="addressLine2">
+            </div>
+            <div class=" input-group mb-3">
+                <label for="zipcode" class="input-group-text">ZipCode</label>
+                <input type="text" class="form-control" name="zipcode" id="zipcode" formControlName="zipCode">
+            </div>
+            <div class="input-group mb-3">
+                <label for="phNum" class=" input-group-text">Phone Number</label>
+                <input type="text" class="form-control" name="phNum" id="phNum" formControlName="phoneNo1">
+            </div>
+            <div class="input-group mb-3">
+                <label for="mobNum" class="input-group-text">Alternate Phone Number</label>
+                <input type="text" class="form-control" name="mobNum" id="mobNum" formControlName="phoneNo2">
+            </div>
+            <div class="input-group mb-3">
+                <label for="email" class=" input-group-text">Email Id</label>
+                <input type="email" class="form-control" name="email" id="email" formControlName="emailId">
+            </div>
+        </form>
+        <!-- <img src="companyInfo.logo" alt="csompanyInfo.logo"> -->
+
+        <div class="text-success" *ngIf="successmsg">
+            {{successmsg}}
+
+        </div>
+    </div>
+    }
+    @else {Company Details Loading...!!!}
+
+    <div class="card-footer">
+        <button type="button" routerLink="/employee" class="btn btn-primary">View Employees</button>
+    </div>
+</div>
