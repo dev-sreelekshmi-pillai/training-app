@@ -50,49 +50,37 @@ export class EmployeeFormComponent implements OnInit {
       departmentName: this.employee?.departmentName,
       resignationOn: this.employee?.resignationOn,
     }))
-    const date1 = document.getElementById("joiningOn")
-    date1
     this.empForm.enable()
   }
 
   formatDate(date: string): string {
-    if (!date) return ''; // Handle null or undefined case
+    if (!date) return '';
     const d = new Date(date);
-    return d.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
+    return d.toISOString().split('T')[0];
   }
   updateEmployee() {
     let emp = {
       ...this.employee, ...this.empForm.value
     }
-    console.log("Emp", emp);
-
     if (this.employee) {
       this.authServ.updateEmployee(emp).subscribe({
         next: (res) => {
-          setTimeout(() => {
-            this.save.emit(res.successMessages ? res.successMessages[0] : '');
-            this.close.emit()
-            if (res.errorMessages) { alert(res.errorMessages) }
-          }, 1000);
+          this.save.emit(res.successMessages ? res.successMessages[0] : '');
+          this.close.emit()
+          if (res.errorMessages) { alert(res.errorMessages) }
 
         }, error: (err) => { alert('Error fetching company details: ' + err.message); },
       })
     }
     else {
-      console.log("Addks");
       this.authServ.addNewEmployee(this.empNewForm.value).subscribe({
         next: (res) => {
-          console.log(res);
-          setTimeout(() => {
-            if (res.errorMessages) {
-              alert(res.errorMessages)
-            } else {
-              this.save.emit(res.successMessages ? res.successMessages[0] : '');
-              this.close.emit()
-            }
-
-          }, 500);
-
+          if (res.errorMessages) {
+            alert(res.errorMessages)
+          } else {
+            this.save.emit(res.successMessages ? res.successMessages[0] : '');
+            this.close.emit()
+          }
         }, error: (err) => { alert('Error fetching company details: ' + err.message); },
       })
     }

@@ -6,3 +6,12 @@
 .card-title {
     margin: auto;
 }
+
+.card-alter {
+    justify-content: center;
+}
+
+.align-text {
+    text-align: center;
+    justify-content: center;
+}

@@ -1,9 +1,8 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { LoginResponse, loginUser, User } from '../model/model';
-import { debounceTime, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -16,40 +15,45 @@ export class LoginComponent implements OnInit {
   destroyRef = inject(DestroyRef)
   formBuilder = inject(NonNullableFormBuilder)
   router = inject(Router)
-  loginServ = inject(AuthService)
+  authServ = inject(AuthService)
   clientId = 'ERPWebApp'
-  // successMessage = ''
   errorMessage = '';
   userData!: User
   userId!: string
+
+  userDataSignal: Signal<User | null>;
 
   loginForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required]
   })
 
+  constructor() { this.userDataSignal = this.authServ.UserData; }
+
   ngOnInit() {
     const formSubscription = this.loginForm.valueChanges.pipe().subscribe({ next: () => { this.errorMessage = '' } })
     this.destroyRef.onDestroy(() => { formSubscription.unsubscribe() })
+    console.log(this.userDataSignal());
+    if (this.userDataSignal()) {
+      this.router.navigate(['/company', this.userDataSignal()?.companyId]);
+    }
   }
-
 
   loginUser() {
     let user!: loginUser
     if (this.loginForm.value.username && this.loginForm.value.password) {
       user = { username: this.loginForm.value.username, password: this.loginForm.value.password, clientId: this.clientId }
-      this.loginServ.loginUser(user).subscribe({
+      this.authServ.loginUser(user).subscribe({
         next: (userDetailsResponse: LoginResponse) => {
-          console.log("userDetailsResponse", userDetailsResponse);
           if (userDetailsResponse.isValid) {
             alert(`User Successfully Logged In`)
             this.userData = userDetailsResponse.data
-            console.log(this.userData);
             this.userId = this.userData.id
             this.router.navigate(['/company', this.userData.companyId])
-            // this.router.navigate(['/heroes', { id: heroId }]);
-            this.loginServ.setTokens(this.userData.token!, this.userData.refreshToken!)
-            if (userDetailsResponse.errorMessages) { alert(userDetailsResponse.errorMessages) }
+            this.authServ.setTokens(this.userData)
+            if (userDetailsResponse.errorMessages) {
+              alert(userDetailsResponse.errorMessages)
+            }
           } else {
             this.errorMessage = userDetailsResponse.errorMessages[0]
           }
@@ -60,15 +64,11 @@ export class LoginComponent implements OnInit {
         }
       })
     }
-
-
   }
-
 
   resetFields() {
     this.loginForm.reset();
     this.errorMessage = '';
-    // this.successMessage = ''
   }
 
 }

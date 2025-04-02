@@ -10,16 +10,8 @@ import { AuthService } from './service/auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  loginserv = inject(AuthService)
-  router = inject(Router)
   ngOnInit() {
 
-    if (localStorage.getItem('aToken')) {
-      this.loginserv.setTokens(localStorage.getItem('aToken')!, localStorage.getItem('rToken')!)
-    }
-    else {
-      this.router.navigate([`/login`])
-    }
   }
 
 }

@@ -12,8 +12,6 @@ export function refreshTokenInterceptor(req: HttpRequest<unknown>, next: HttpHan
     return next(req).pipe(
         catchError((error) => {
             if (error.status === 401 && !isRefreshing) {
-                console.log("error in refresh interceptor");
-
                 isRefreshing = true;
                 return refreshToken(authService, router).pipe(
                     switchMap((newToken) => {
@@ -43,7 +41,5 @@ const refreshToken = (authService: AuthService, router: Router) => {
         router.navigate(['/login']);
         return throwError(() => new Error('No refresh token'));
     }
-    console.log(authService.refreshAccessToken());
-
     return authService.refreshAccessToken();
 };

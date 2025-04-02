@@ -5,33 +5,22 @@
             <tr>
                 <th>Name</th>
                 <th>Employee Id</th>
-                <!-- <th>Email Id</th>
-                <th>Contact No:</th> -->
                 <th>Joining Date</th>
-                <!-- <th>Department Name</th> -->
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @for (emp of employeeList(); track $index) {<tr>
-                <td>{{emp.fullName}}</td>
+                <td>{{emp.fullName | titlecase}}</td>
                 <td>{{emp.employeeCode}}</td>
-                <!-- <td>{{emp.officeEmailId}}</td>
-                <td>{{emp.officeContactNo}}</td> -->
                 <td>{{emp.joiningOn | date: 'longDate' }}</td>
-                <!-- <td>{{emp.departmentName}}</td> -->
                 <td>
-                    <button class="btn btn-primary mx-1" (click)="openModal(emp)">Edit</button>
-                    <button class="btn btn-primary mx-1" (click)="deleteEmp(emp)">Delete</button>
+                    <button class="btn btn-primary m-1" (click)="openModal(emp)">Edit</button>
+                    <!-- <button class="btn btn-primary m-1" (click)="deleteEmp(emp)">Delete</button> -->
                 </td>
             </tr>
             }
         </tbody>
-        <!-- <tfoot>
-            <tr>
-                
-            </tr>
-        </tfoot> -->
     </table>
     <button class="btn btn-secondary mx-1" (click)="openModal()">Add Employee</button>
 </div>

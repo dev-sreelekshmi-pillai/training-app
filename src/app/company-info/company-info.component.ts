@@ -15,36 +15,28 @@ import { CommonModule } from '@angular/common';
 })
 export class CompanyInfoComponent implements OnInit {
   destroyRef = inject(DestroyRef)
-  companyInfo!: companyInfo
-  companyId = ''
-  private aR = inject(ActivatedRoute)
-  loginServ = inject(AuthService)
+  aR = inject(ActivatedRoute)
+  authServ = inject(AuthService)
   fb = inject(FormBuilder)
   infoForm!: FormGroup
   initialFormData!: {}
   isFormEditable = false;
   successmsg = ''
-
-  constructor() {
-  }
+  companyInfo!: companyInfo
+  companyId = ''
+  constructor() { }
 
   ngOnInit() {
-
-
     this.aR.paramMap.subscribe((params: ParamMap) => {
       if (params.get('cid')) {
         this.companyId = String(params.get('cid'))
       }
-      console.log(params.get('cid'));
       this.getCompanyInfo();
     })
-    console.log(this.companyId);
-
-    this.loginServ.refreshAccessToken()
   }
 
   getCompanyInfo() {
-    this.loginServ.getCompanyInfo(this.companyId).subscribe({
+    this.authServ.getCompanyInfo(this.companyId).subscribe({
       next: (response: LoginResponse) => {
         this.companyInfo = response.data;
         this.infoForm = this.fb.group({
@@ -75,14 +67,10 @@ export class CompanyInfoComponent implements OnInit {
   }
 
   updateCompanyDetails() {
-    console.log("this.initialFormData ", this.initialFormData);
-
-    console.log("this.infoForm.value", this.infoForm.value);
-
     if (JSON.stringify(this.initialFormData) !== JSON.stringify(this.infoForm.value)) {
       this.companyInfo = { ...this.companyInfo, ...this.infoForm.value }
       this.isFormEditable = false
-      this.loginServ.editCompanyInfo(this.companyInfo).subscribe({
+      this.authServ.editCompanyInfo(this.companyInfo).subscribe({
         next: (response: LoginResponse) => {
           this.infoForm.setValue({
             addressLine1: this.companyInfo.addressLine1,

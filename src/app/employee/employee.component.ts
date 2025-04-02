@@ -1,13 +1,13 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 import { employee } from '../model/model';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 
 @Component({
   selector: 'app-employee',
   standalone: true,
-  imports: [DatePipe, CommonModule, EmployeeFormComponent],
+  imports: [DatePipe, CommonModule, EmployeeFormComponent, TitleCasePipe],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.css'
 })
@@ -35,7 +35,6 @@ export class EmployeeComponent implements OnInit {
       next: (res) => {
         this.employeeList.set(res.data.result)
         if (res.errorMessages) { alert(res.errorMessages) }
-
       },
       error: (err) => {
         alert('Error fetching company details: ' + err.message);
@@ -48,7 +47,6 @@ export class EmployeeComponent implements OnInit {
     this.getEmployessList();
   }
 
-  deleteEmp(emp: employee) {
-
-  }
+  // deleteEmp(emp: employee) {
+  // }
 }

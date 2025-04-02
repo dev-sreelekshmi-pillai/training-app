@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card card-alter">
     @if (companyInfo) {
     <div class="card-header">
         <div class="card-title">{{companyInfo.name}}</div>
@@ -35,17 +35,17 @@
                 <input type="email" class="form-control" name="email" id="email" formControlName="emailId">
             </div>
         </form>
-        <!-- <img src="companyInfo.logo" alt="csompanyInfo.logo"> -->
-
         <div class="text-success" *ngIf="successmsg">
             {{successmsg}}
 
         </div>
     </div>
-    }
-    @else {Company Details Loading...!!!}
-
     <div class="card-footer">
         <button type="button" routerLink="/employee" class="btn btn-primary">View Employees</button>
     </div>
+    }
+    @else {
+    <div class="align-text">Company Details Loading...!!!</div>
+    }
+
 </div>

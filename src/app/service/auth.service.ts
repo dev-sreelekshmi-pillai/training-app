@@ -1,7 +1,7 @@
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { companyInfo, employee, LoginResponse, loginUser, newUser } from '../model/model';
+import { companyInfo, employee, LoginResponse, loginUser, newUser, User } from '../model/model';
 import { catchError, map, Observable, switchMap, tap, throwError } from 'rxjs';
 
 export interface refreshDoc {
@@ -17,6 +17,9 @@ export class AuthService {
   private accessToken = signal<string>('')
   private refreshToken = signal<string>('')
   private userId = signal<string>('')
+  private clientId = signal<string>('ERPWebApp')
+
+  private userDataSignal = signal<User | null>(null);
 
   validToken = signal<boolean>(false)
   host_url = `http://trainingapi.ridewaretech.com/`;
@@ -31,10 +34,8 @@ export class AuthService {
   loginUser(user: loginUser): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.host_url}User/Login`, user).pipe(
       map((response) => {
-        this.userId.set(response.data.id)
-        console.log(this.userId());
 
-        this.setTokens(response.data.token, response.data.refreshToken)
+        this.setTokens(response.data)
         return response;
       }),
       catchError((error) => {
@@ -92,22 +93,19 @@ export class AuthService {
   deleteEmployee(employee: employee) {
     return this.http.post<LoginResponse>(`${this.host_url}Employee/UpdateEmployee`, employee,).pipe(
       map((res) => {
-        console.log("service udpate res", res);
         return res;
       }), catchError((error) => {
-        console.error('Error fetching courses:', error);
         return throwError(() => new Error(error.message || 'Something went wrong!'));
       }))
   }
 
-  setTokens(aToken: string, rToken: string) {
-    console.log("Atoken", aToken);
-    console.log("rtoken", rToken);
-    this.accessToken.set(aToken);
-    this.refreshToken.set(rToken);
+  setTokens(userData: User) {
+    this.accessToken.set(userData.token ?? '');
+    this.refreshToken.set(userData.refreshToken ?? '');
+    this.userId.set(userData.id)
+    this.userDataSignal.set(userData);
     localStorage.setItem('aToken', this.accessToken())
     localStorage.setItem('rToken', this.refreshToken())
-
   }
 
   get accessTokenValue() {
@@ -118,24 +116,33 @@ export class AuthService {
     return this.refreshToken()
   }
 
+  get UserData() {
+    return this.userDataSignal;
+  }
+
   clearTokens() {
-    // this.accessToken.set('');
-    // this.refreshToken.set('');
-    // localStorage.removeItem('aToken')
-    // localStorage.removeItem('rToken')
+    this.accessToken.set('');
+    this.refreshToken.set('');
+    localStorage.removeItem('aToken')
+    localStorage.removeItem('rToken')
   }
 
   refreshAccessToken() {
-    const refreshbody =
+    console.log(this.userId());
+
+    const refreshTokenBody =
     {
-      'id': "44c6ef47-e562-4230-9ec6-63bdc3b2e3f9",
-      'refreshToken': this.refreshToken(),
-      'clientId': "ERPWebApp"
+      id: this.userId(),
+      refreshToken: this.refreshToken(),
+      clientId: this.clientId()
     }
-    return this.http.post<LoginResponse>(`${this.host_url}User/RevokeRefreshToken`, {}
+    return this.http.post<LoginResponse>(`${this.host_url}User/RevokeRefreshToken`, refreshTokenBody
     ).pipe(
       map((res) => {
-        console.log("refershed");
+        if (res.isValid && res.data.token) {
+          this.setTokens(res.data);
+          return res.data.token;
+        }
         return res;
       }), catchError((error) => {
         return throwError(() => new Error(error.message || 'Something went wrong!'));

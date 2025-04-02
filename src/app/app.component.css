@@ -4,8 +4,12 @@
 }
 
 .card-align {
-    justify-items: center;
-    margin: auto;
+    /* justify-items: center;
+    margin: auto; */
+    display: flex;
+    /* margin: auto; */
+    justify-content: center;
+    align-items: center;
 }
 
 .card {
